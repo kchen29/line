@@ -5,17 +5,17 @@
             "P3 ~a ~a 255 ~{~%~{~{~a ~a ~a ~}~}~}"
             (first size) (second size) (2d-array-to-list pixels))))
 
-(defun 2d-array-to-list (array)
-  (loop for i below (array-dimension array 0)
-        collect (loop for j below (array-dimension array 1)
-                      collect (aref array i j))))
-
-;;plots a point on the screen
 ;;modifies place to put so that (0, 0) is lower left corner of screen
 ;;increasing x traverses horizontally
+(defun 2d-array-to-list (array)
+  (loop for y from (- (array-dimension array 0) 1) downto 0
+        collect (loop for x below (array-dimension array 0)
+                      collect (aref array x y))))
+
+;;plots a point on the screen
 ;;note: does not copy the pixel
 (defun plot (x y screen pixel)
-  (setf (aref screen (- (array-dimension screen 0) y 1) x) pixel))
+  (setf (aref screen x y) pixel))
 
 ;;screen is a 2d array of pixels
 ;;pixel is a '(r g b)
@@ -84,7 +84,7 @@
 ;;draws a-size x a-size image
 (defun main (a-size)
   (let* ((dimensions (list a-size a-size))
-         (half-way (- (/ a-size 2) 1))
+         (half-way (/ a-size 2))
          (full-way (- a-size 1))
          (screen (make-array dimensions :initial-element '(0 0 0)))
          (color '(0 255 0)))
