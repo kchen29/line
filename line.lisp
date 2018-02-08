@@ -41,9 +41,11 @@
       (incf d (* 2 A)))))
 
 (defun draw-line (x0 y0 x1 y1 screen pixel)
-  (when (plusp (- (+ y1 x0) (+ y0 x1)))
-    (draw-octant-2-line x0 y0 x1 y1 screen pixel))
-  (draw-octant-1-line x0 y0 x1 y1 screen pixel))
+  (let ((xdif (- x1 x0))
+        (ydif (- y1 y0)))
+    (when (plusp (- ydif xdif)))
+      (draw-octant-2-line x0 y0 x1 y1 screen pixel))
+    (draw-octant-1-line x0 y0 x1 y1 screen pixel))
 
 ;;draws a-size x a-size image
 (defun main (a-size)
@@ -58,6 +60,11 @@
     (draw-line 0 0 249 125 screen color)
     ;;m~2
     (draw-line 0 0 249 375 screen color)
+    ;;m=-1
+    (draw-line 0 499 249 249 screen color)
+    ;;m~-1/2
+    ;;m~-2
+
     (write-ppm "output.ppm" dimensions screen)))
 
 (main 500)
