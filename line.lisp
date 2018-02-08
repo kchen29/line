@@ -16,8 +16,7 @@
 
 ;;screen is a 2d array of pixels
 ;;pixel is a '(r g b)
-;;assume octant I for now
-(defun draw-line (x0 y0 x1 y1 screen pixel)
+(defun draw-octant-1-line (x0 y0 x1 y1 screen pixel)
   (do* ((x x0 (1+ x))
         (y y0)
         (A (- y1 y0))
@@ -29,12 +28,36 @@
       (incf y)
       (incf d (* 2 B)))))
 
+(defun draw-octant-2-line (x0 y0 x1 y1 screen pixel)
+  (do* ((x x0)
+        (y y0 (1+ y))
+        (A (- y1 y0))
+        (B (- x0 x1))
+        (d (+ A (* 2 B)) (+ d (* 2 B))))
+       ((> y y1))
+    (plot x y screen pixel)
+    (when (< d 0)
+      (incf x)
+      (incf d (* 2 A)))))
+
+(defun draw-line (x0 y0 x1 y1 screen pixel)
+  (when (plusp (- (+ y1 x0) (+ y0 x1)))
+    (draw-octant-2-line x0 y0 x1 y1 screen pixel))
+  (draw-octant-1-line x0 y0 x1 y1 screen pixel))
+
 ;;draws a-size x a-size image
 (defun main (a-size)
   (let* ((dimensions (list a-size a-size))
          (screen (make-array dimensions :initial-element '(0 0 0)))
          (color '(0 255 0)))
+    ;;m=1
     (draw-line 0 0 249 249 screen color)
+    ;;m=0
+    (draw-line 0 0 249 0 screen color)
+    ;;m~1/2
+    (draw-line 0 0 249 125 screen color)
+    ;;m~2
+    (draw-line 0 0 249 375 screen color)
     (write-ppm "output.ppm" dimensions screen)))
 
 (main 500)
