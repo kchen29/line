@@ -40,12 +40,31 @@
       (incf x)
       (incf d (* 2 A)))))
 
+(defun draw-octant-7-line (x0 y0 x1 y1 screen pixel))
+
+(defun draw-octant-8-line (x0 y0 x1 y1 screen pixel)
+  (do* ((x x0 (1+ x))
+        (y y0)
+        (A (- y1 y0))
+        (B (- x0 x1))
+        (d (+ (* 2 A) B) (+ d (* 2 A))))
+       ((> x x1))
+    (plot x y screen pixel)
+    (when (< d 0)
+      (decf y)
+      (decf d (* 2 B)))))
+
 (defun draw-line (x0 y0 x1 y1 screen pixel)
   (let ((xdif (- x1 x0))
         (ydif (- y1 y0)))
-    (when (plusp (- ydif xdif)))
-      (draw-octant-2-line x0 y0 x1 y1 screen pixel))
-    (draw-octant-1-line x0 y0 x1 y1 screen pixel))
+    ;;assume x1 > x0
+    (if (>= ydif 0)
+        (if (minusp (- ydif xdif))
+            (draw-octant-1-line x0 y0 x1 y1 screen pixel)
+            (draw-octant-2-line x0 y0 x1 y1 screen pixel))
+        (if (minusp (+ ydif xdif))
+            (draw-octant-7-line x0 y0 x1 y1 screen pixel)
+            (draw-octant-8-line x0 y0 x1 y1 screen pixel)))))
 
 ;;draws a-size x a-size image
 (defun main (a-size)
@@ -63,6 +82,7 @@
     ;;m=-1
     (draw-line 0 499 249 249 screen color)
     ;;m~-1/2
+    (draw-line 0 499 249 375 screen color)
     ;;m~-2
 
     (write-ppm "output.ppm" dimensions screen)))
