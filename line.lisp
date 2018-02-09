@@ -8,7 +8,7 @@
 ;;modifies place to put so that (0, 0) is lower left corner of screen
 ;;increasing x traverses horizontally
 (defun 2d-array-to-list (array)
-  (loop for y from (- (array-dimension array 0) 1) downto 0
+  (loop for y from (1- (array-dimension array 1)) downto 0
         collect (loop for x below (array-dimension array 0)
                       collect (aref array x y))))
 
@@ -85,7 +85,7 @@
 (defun main (a-size)
   (let* ((dimensions (list a-size a-size))
          (half-way (/ a-size 2))
-         (full-way (- a-size 1))
+         (full-way (1- a-size))
          (screen (make-array dimensions :initial-element '(0 0 0)))
          (color '(0 255 0)))
     
