@@ -1,4 +1,5 @@
-(load "draw")
+(eval-when (:compile-toplevel :load-toplevel)
+  (load "draw"))
 
 (defun main (a-size filename)
   "Tests draw-line, making an A-SIZE by A-SIZE image. Outputs to FILENAME."

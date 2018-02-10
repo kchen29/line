@@ -1,4 +1,5 @@
-(load "display.fasl")
+(eval-when (:compile-toplevel :load-toplevel)
+  (load "display"))
 
 (defmacro draw-line-base (x0 y0 x1 y1 plot-1 plot-2)
   "Base code for octant 1. Other octants can be gotten from transformations."
