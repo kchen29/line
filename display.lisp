@@ -1,19 +1,20 @@
-;;pixels - 2D array of pixels
-(defun write-ppm (filename size pixels)
+(defun write-ppm (filename dimensions screen)
+  "Writes a ppm, assuming P3 and max color value of 255.
+   Writes to FILENAME, with DIMENSIONS and 2D array of colors SCREEN."
   (with-open-file (stream filename :direction :output :if-exists :supersede)
     (format stream
             "P3 ~a ~a 255 ~{~%~{~{~a ~a ~a ~}~}~}"
-            (first size) (second size) (2d-array-to-list pixels))))
+            (first dimensions) (second dimensions) (screen-to-list screen))))
 
-;;modifies place to put so that (0, 0) is lower left corner of screen
-;;increasing x traverses horizontally
-(defun 2d-array-to-list (array)
-  (loop for y from (1- (array-dimension array 1)) downto 0
-     collect (loop for x below (array-dimension array 0)
-                collect (aref array x y))))
+(defun screen-to-list (screen)
+  "Turns a 2D array SCREEN into a list.
+   Places (0, 0) on the lower left corner of the list."
+  (loop for y from (1- (array-dimension screen 1)) downto 0
+     collect (loop for x below (array-dimension screen 0)
+                collect (aref screen x y))))
 
-;;plots a point on the screen
-;;note: does not copy the pixel
-(defun plot (x y screen pixel)
-  (setf (aref screen x y) pixel))
+(defun plot (x y screen color)
+  "Plots (x, y) on the 2D array SCREEN with COLOR.
+   COLOR is not copied."
+  (setf (aref screen x y) color))
 

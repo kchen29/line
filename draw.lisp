@@ -1,8 +1,7 @@
 (load "display.fasl")
 
-;;base for octant 1
-;;other octants can be gotten from transformations
 (defmacro draw-line-base (x0 y0 x1 y1 plot-1 plot-2)
+  "Base code for octant 1. Other octants can be gotten from transformations."
   `(do* ((x ,x0 (1+ x))
          (y ,y0)
          (A (- ,y1 ,y0))
@@ -11,12 +10,13 @@
          (2B (* 2 B))
          (d (+ 2A B) (+ d 2A)))
         ((> x ,x1))
-     (plot ,plot-1 ,plot-2 screen pixel)
+     (plot ,plot-1 ,plot-2 screen color)
      (when (> d 0)
        (incf y)
        (incf d 2B))))
 
-(defun draw-line (x0 y0 x1 y1 screen pixel)
+(defun draw-line (x0 y0 x1 y1 screen color)
+  "Draws a line from (x0, y0) to (x1, y1) on SCREEN using COLOR."
   (when (minusp (- x1 x0))
     (rotatef x0 x1)
     (rotatef y0 y1))

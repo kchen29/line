@@ -1,7 +1,7 @@
 (load "draw")
 
-;;draws a-size x a-size image
 (defun main (a-size)
+  "Tests draw-line, making an a-size by a-size image"
   (let* ((dimensions (list a-size a-size))
          (half-way (/ a-size 2))
          (full-way (1- a-size))
