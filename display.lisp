@@ -18,3 +18,7 @@
    COLOR is not copied."
   (setf (aref screen x y) color))
 
+(defun display (filename)
+  "Displays the image with FILENAME.
+   Uses imagemagick's display to display an image."
+  (run-program "display" (list filename) :wait nil :search t))

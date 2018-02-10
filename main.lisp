@@ -1,7 +1,7 @@
 (load "draw")
 
-(defun main (a-size)
-  "Tests draw-line, making an a-size by a-size image"
+(defun main (a-size filename)
+  "Tests draw-line, making an A-SIZE by A-SIZE image. Outputs to FILENAME."
   (let* ((dimensions (list a-size a-size))
          (half-way (/ a-size 2))
          (full-way (1- a-size))
@@ -34,6 +34,7 @@
     (draw-line 0 half-way full-way half-way screen color)
     (draw-line half-way 0 half-way full-way screen color)
     
-    (write-ppm "output.ppm" dimensions screen)))
+    (write-ppm filename dimensions screen)
+    (display filename)))
 
-(main 500)
+(main 500 "output.ppm")
